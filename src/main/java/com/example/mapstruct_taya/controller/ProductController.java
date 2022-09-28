@@ -1,23 +1,27 @@
 package com.example.mapstruct_taya.controller;
 
+import com.example.mapstruct_taya.dto.ItemDto;
 import com.example.mapstruct_taya.dto.ProductDto;
 import com.example.mapstruct_taya.mapper.ProductMapper;
+import com.example.mapstruct_taya.model.Item;
 import com.example.mapstruct_taya.model.Product;
 import com.example.mapstruct_taya.repository.ProductRepository;
+import com.example.mapstruct_taya.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @RestController("/product")
 @AllArgsConstructor
+@Transactional(propagation = Propagation.NEVER)
 public class ProductController {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
+    private final ProductService productService;
 
     @GetMapping("/new")
     public ProductDto getNewProductForSave() {
@@ -35,8 +39,25 @@ public class ProductController {
         return productMapper.toDto(save);
     }
 
+    @GetMapping("/item/new")
+    public ItemDto getNewItemForSave() {
+        return new ItemDto()
+                .setName("n/a");
+    }
+
+    @PostMapping("/{productId}/item/new")
+    @Transactional
+    public ProductDto addItemToProduct(@PathVariable("productId") final Long productId,
+                                       @RequestBody final ItemDto itemDto) {
+        final Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Not found productId = " + productId));
+        final Item item = productMapper.fromDto(itemDto);
+        productService.addItem(product, item);
+        return productMapper.toDto(product);
+    }
+
     @GetMapping
     public List<ProductDto> getAll() {
-        return productMapper.toDtos(productRepository.findAll());
+        return productMapper.toDtos(productRepository.findAllWithItems());
     }
 }

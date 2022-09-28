@@ -15,12 +15,9 @@ import java.util.UUID;
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-//    @Mapping(source = "product.desc", target = "description", defaultValue = "description")
-//    @Mapping(target = "epicId", expression = "java(UUID.randomUUID().toString())")
     @Mapping(target = "product.items", expression = "java(toDto(product.getItems())")
     ProductDto toDto(Product product);
 
-//    @Mapping(source = "productDto.description", target = "desc", defaultValue = "description")
     @Mapping(target = "productDto.items", expression = "java(fromDto(productDto.getItems()))")
     @Mapping(target = "epicId", expression = "java(UUID.randomUUID().toString())")
     Product fromDto(ProductDto productDto);
