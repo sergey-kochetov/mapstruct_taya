@@ -1,9 +1,6 @@
 package com.example.mapstruct_taya.controller;
 
-import com.example.mapstruct_taya.validator.ApiErrorResponse;
-import com.example.mapstruct_taya.validator.ApplicationException;
-import com.example.mapstruct_taya.validator.DataNotFoundException;
-import com.example.mapstruct_taya.validator.ProductValidatorException;
+import com.example.mapstruct_taya.validator.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +36,12 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return this.prepareResponse(pve.getStatus(), response);
     }
 
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<Object> handleAuthenticationException(Exception ex) {
+        AuthenticationException au = (AuthenticationException)ex;
+        ApiErrorResponse response = ApiErrorResponse.valueOf(au.getErrorCode(), au.getMessage());
+        return this.prepareResponse(au.getStatus(), response);
+    }
 
     protected ResponseEntity<Object> prepareResponse(HttpStatus status, ApiErrorResponse response) {
         return new ResponseEntity(response, new HttpHeaders(), status);
