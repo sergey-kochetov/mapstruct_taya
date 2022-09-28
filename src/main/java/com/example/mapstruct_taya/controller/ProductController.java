@@ -7,6 +7,7 @@ import com.example.mapstruct_taya.model.Item;
 import com.example.mapstruct_taya.model.Product;
 import com.example.mapstruct_taya.repository.ProductRepository;
 import com.example.mapstruct_taya.service.ProductService;
+import com.example.mapstruct_taya.validator.DataNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +51,7 @@ public class ProductController {
     public ProductDto addItemToProduct(@PathVariable("productId") final Long productId,
                                        @RequestBody final ItemDto itemDto) {
         final Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Not found productId = " + productId));
+                .orElseThrow(() -> new DataNotFoundException(1001, "Not found productId = " + productId));
         final Item item = productMapper.fromDto(itemDto);
         productService.addItem(product, item);
         return productMapper.toDto(product);
