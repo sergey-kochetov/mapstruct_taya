@@ -5,11 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ItemDto {
+public class ItemDto implements Serializable {
     private Long id;
     private String name;
 }

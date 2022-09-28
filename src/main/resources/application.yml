@@ -4,7 +4,7 @@ server:
     encoding:
       enabled: true
       force: true
-      charset: utf-8
+#      charset: utf-8
   error:
     include-message: always
     include-stacktrace: always

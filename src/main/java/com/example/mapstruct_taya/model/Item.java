@@ -15,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Item {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 

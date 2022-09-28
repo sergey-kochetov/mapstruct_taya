@@ -8,23 +8,27 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
 import java.util.UUID;
 
 @Mapper(componentModel = "spring", imports = {UUID.class})
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Mapping(source = "product.desc", target = "description", defaultValue = "description")
-    @Mapping(target = "epicId", expression = "java(UUID.randomUUID().toString())")
+//    @Mapping(source = "product.desc", target = "description", defaultValue = "description")
+//    @Mapping(target = "epicId", expression = "java(UUID.randomUUID().toString())")
     @Mapping(target = "product.items", expression = "java(toDto(product.getItems())")
     ProductDto toDto(Product product);
 
-    @Mapping(source = "productDto.description", target = "desc", defaultValue = "description")
+//    @Mapping(source = "productDto.description", target = "desc", defaultValue = "description")
     @Mapping(target = "productDto.items", expression = "java(fromDto(productDto.getItems()))")
+    @Mapping(target = "epicId", expression = "java(UUID.randomUUID().toString())")
     Product fromDto(ProductDto productDto);
 
     ItemDto toDto(Item item);
 
     @Mapping(target = "product", ignore = true)
     Item fromDto(ItemDto itemDto);
+
+    List<ProductDto> toDtos(List<Product> products);
 }

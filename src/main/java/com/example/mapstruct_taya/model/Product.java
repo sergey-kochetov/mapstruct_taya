@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,14 +20,15 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Product {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "desc")
-    private String desc;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "quantity")
     private Integer quantity;
