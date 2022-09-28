@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "product")
@@ -32,4 +33,6 @@ public class Product {
     @Column(name = "price", precision = 19, scale = 2)
     private BigDecimal price;
 
+    @Column(name = "epic_id")
+    private String epicId;
 }
