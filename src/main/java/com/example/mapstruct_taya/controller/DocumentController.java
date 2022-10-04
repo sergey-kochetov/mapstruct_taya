@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/product")
+@RestController("/document")
 @AllArgsConstructor
 @Transactional(propagation = Propagation.NEVER)
 public class DocumentController {
